@@ -18,25 +18,40 @@ class FirstApp extends StatefulWidget {
 
 class _FirstAppState extends State<FirstApp> {
   int _questionIndex = 0;
+  int _totalScore = 0;
 
   final List<Map<String, dynamic>> _questions = [
     {
       "question": "What's your favorite color?",
-      "answers": ["black", "red", "green", "white"]
+      "answers": [
+        {'text': "black", 'score': 10},
+        {'text': "red", 'score': 5},
+        {'text': "green", 'score': 3},
+        {'text': "white", 'score': 1},
+      ]
     },
     {
       "question": "What's your favorite animal?",
-      "answers": ["cat", "dog", "tiger", "lion"]
+      "answers": [
+        {'text': "cat", 'score': 10},
+        {'text': "dog", 'score': 5},
+        {'text': "lion", 'score': 3},
+        {'text': "tiger", 'score': 1},
+      ]
     },
-    {
-      "question": "What's your favorite country?",
-      "answers": ["india", "america", "china", "ghana"]
-    }
   ];
 
-  void _answerQuestion() {
+  void _answerQuestion(int score) {
     setState(() {
       _questionIndex += 1;
+      _totalScore += score;
+    });
+  }
+
+  void _ResetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
     });
   }
 
@@ -54,7 +69,7 @@ class _FirstAppState extends State<FirstApp> {
                 questions: _questions,
                 answerQuestion: _answerQuestion,
                 questionIndex: _questionIndex)
-            : const Result(),
+            : Result(score: _totalScore, resetHandler: _ResetQuiz),
       ),
     );
   }
