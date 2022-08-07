@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './answer.dart';
-import './question.dart';
-// import 'package:flutter/cupertino.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() {
   runApp(const FirstApp());
@@ -18,9 +17,9 @@ class FirstApp extends StatefulWidget {
 }
 
 class _FirstAppState extends State<FirstApp> {
-  int _currentQuestion = 0;
+  int _questionIndex = 0;
 
-  final List<Map<String, dynamic>> questions = [
+  final List<Map<String, dynamic>> _questions = [
     {
       "question": "What's your favorite color?",
       "answers": ["black", "red", "green", "white"]
@@ -37,7 +36,7 @@ class _FirstAppState extends State<FirstApp> {
 
   void _answerQuestion() {
     setState(() {
-      _currentQuestion += 1;
+      _questionIndex += 1;
     });
   }
 
@@ -50,17 +49,12 @@ class _FirstAppState extends State<FirstApp> {
           title: const Text('FlutterApp'),
           centerTitle: false,
         ),
-        body: _currentQuestion < questions.length
-            ? Column(children: [
-                Question(questions[_currentQuestion]['question']),
-                ...(questions[_currentQuestion]['answers'] as List<String>)
-                    .map((answer) {
-                  return Answer(_answerQuestion, answer);
-                }).toList(),
-              ])
-            : const Center(
-                child: Text('You did it'),
-              ),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                questions: _questions,
+                answerQuestion: _answerQuestion,
+                questionIndex: _questionIndex)
+            : const Result(),
       ),
     );
   }
